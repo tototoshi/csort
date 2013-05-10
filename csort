@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+import sys
+import argparse
+import csort
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-f', '--field', required=True)
+parser.add_argument('-d', '--delimiter', default='\t')
+parser.add_argument('file', nargs='?')
+option = parser.parse_args(sys.argv[1:])
+
+if option.file is None:
+    input = sys.stdin
+else:
+    input = open(option.file)
+
+field_indices = [int(field) - 1 for field in option.field.split(",")]
+
+try:
+    for line in csort.csort(input, field_indices, option.delimiter):
+        print line
+finally:
+    input.close()
